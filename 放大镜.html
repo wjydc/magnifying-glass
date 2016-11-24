@@ -1,0 +1,99 @@
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>放大镜</title>
+	<style type="text/css">
+		#box1{
+			width: 350px;
+			height:350px;
+			position: absolute;
+			left: 50px;
+			overflow: hidden;
+			border: 1px gray solid;
+		}
+		#box2{
+			width: 500px;
+			height: 500px;
+			position: absolute;
+			overflow: hidden;
+			left: 600px;
+			display: none;
+		}
+		#inner{
+			width: 200px;
+			height: 200px;
+			background-color: orange;
+			opacity: 0.6;
+			position: absolute;
+			z-index: 5;
+			display: none;
+		}
+		#box2 img{
+			position: absolute;
+			left: 0;
+		}
+
+	</style>
+</head>
+<body>
+	<div id="box1">
+		<img src="1.jpg">
+		<div id="inner"></div>
+	</div>
+	<div id="box2">
+		<img src="2.jpg">
+	</div>
+</body>
+<script type="text/javascript">
+	
+var box1=document.getElementById('box1');
+var box2=document.getElementById('box2');
+var inner=document.getElementById("inner");
+var img=box2.getElementsByTagName('img')[0];
+
+box1.onmousemove=function(e){
+	var ev=e||window.event;
+	box2.style.display="block";
+	inner.style.display="block";
+	var x=ev.clientX;
+	var y=ev.clientY;
+
+	var innerx=x-inner.offsetWidth/2-box1.offsetLeft;
+	var innery=y-inner.offsetHeight/2-box1.offsetTop;
+
+
+	// 限定inner移动范围
+	var maxwidth=box1.clientWidth-inner.offsetWidth;
+	var maxheight=box1.clientHeight-inner.offsetHeight;
+	console.log(maxwidth);
+	if (innerx<0){
+		innerx=0;
+	}else if(innerx>maxwidth){
+		innerx=maxwidth;
+	}
+
+	if (innery>maxheight) {
+		innery=maxheight
+	}else if(innery<0){
+		innery=0;
+	}
+
+	inner.style.left=innerx+"px";
+	inner.style.top=innery+"px";
+
+	var scalx=innerx/maxwidth;
+	var scaly=innery/maxheight;
+
+	img.style.left=-scalx*(img.offsetWidth-box2.offsetWidth)+"px";
+	img.style.top=-scaly*(img.offsetHeight-box2.offsetHeight)+"px";
+
+
+}
+
+
+
+
+
+
+</script>
+</html>
